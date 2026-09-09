@@ -89,6 +89,10 @@ export default {
     headers.set("x-content-type-options", "nosniff");
     headers.set("x-enter-up-source", source.name);
     headers.set("x-enter-up-provenance", source.url);
+    // The ingestion worker verifies this exact header before accepting relayed
+    // bytes as authoritative source material. Keep it stable for compatibility.
+    headers.set("x-enter-up-official-source", source.url);
+    headers.set("x-enter-up-fetched-at", new Date().toISOString());
 
     const response = new Response(upstream.body, {
       status: 200,
